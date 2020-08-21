@@ -1,3 +1,7 @@
 .env
+.venv
 venv
 *.log
+__pycache__
+*.pyo
+*.pyc
