@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "onlinetalkbata"
+version = "0.1.0"
+description = ""
+authors = ["KAWAI Shun <shun@osstech.co.jp>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.25.0"
+python-dotenv = "^0.15.0"
+beautifulsoup4 = "^4.9.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.1.2"
+
+[tool.poetry.scripts]
+main = "onlinetalkbata.ngt48cdshop:main"
+main2 = "onlinetalkbata.onlinetalk:main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
