@@ -49,7 +49,7 @@ def sum_tickets(tickets):
 
 def get_tickets(cookies):
     url = f'{APIURL}/clasptickets'
-    params = {'group': 'NGT48', 'limit': 10, 'status': 'all'}
+    params = {'group': 'NGT48', 'limit': 100, 'status': 'all'}
     res = requests.get(url, cookies=cookies, params=params)
     try:
         return res.json()
