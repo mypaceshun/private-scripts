@@ -39,9 +39,19 @@ def main():
     print('\nInput Finish!')
 
 def login(driver):
-    username_el = driver.find_element_by_id('input-28')
+    username_el = None
+    for i in range(5):
+        try:
+            username_el = driver.find_element_by_id('input-27')
+        except Exception as error:
+            time.sleep(1)  # 描画待ち
+            continue
+        break
+    if username_el is None:
+        print(error)
+        sys.exit(1)
     username_el.send_keys(USERNAME)
-    password_el = driver.find_element_by_id('input-31')
+    password_el = driver.find_element_by_id('input-30')
     password_el.send_keys(PASSWORD)
     submit_el = driver.find_element_by_tag_name('button')
     submit_el.click()
