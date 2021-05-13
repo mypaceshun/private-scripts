@@ -21,7 +21,6 @@ def main():
     tickets = sum_tickets(tickets)
     keys = [int(k) for k in tickets.keys()]
     keys = [str(k) for k in sorted(keys)]
-    print(keys)
     stotal = 0
     total = 0
     for _id in keys:
