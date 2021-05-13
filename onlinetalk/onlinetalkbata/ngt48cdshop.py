@@ -1,5 +1,6 @@
 import os
 import requests
+from datetime import datetime
 from json.decoder import JSONDecodeError
 from dotenv import load_dotenv
 
@@ -13,10 +14,17 @@ def main():
     password = os.environ.get('NGT48CD_PASSWORD', 'password')
     cookies = authentication(username, password)
     tickets = get_tickets(cookies)
+    query = {
+            'after_today': True,
+            }
+    tickets = filter_tickets(tickets, query)
     tickets = sum_tickets(tickets)
+    keys = [int(k) for k in tickets.keys()]
+    keys = [str(k) for k in sorted(keys)]
+    print(keys)
     stotal = 0
     total = 0
-    for _id in tickets:
+    for _id in keys:
         member = tickets[_id]['member']
         bu = tickets[_id]['section']['name']
         count = tickets[_id]['count']
@@ -28,6 +36,20 @@ def main():
         stotal += success_count
     print(f'total: {stotal} / {total}')
 
+
+def filter_tickets(tickets, query):
+    for one_apply in tickets:
+        entries = one_apply['entry']
+        _entries = []
+        for entry in entries:
+            if query['after_today']:
+                today = datetime.today()
+                datestr = entry['date']
+                date = datetime.strptime(datestr, '%Y-%m-%d')
+                if today < date:
+                    _entries.append(entry)
+        one_apply['entry'] = _entries
+    return tickets
 
 def sum_tickets(tickets):
     sum_record = {}
