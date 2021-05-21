@@ -9,6 +9,7 @@ load_dotenv()
 BASEURL = 'https://ngt48cd.shop'
 APIURL = f'{BASEURL}/api/v1'
 
+
 def main():
     username = os.environ.get('NGT48CD_USERNAME', 'username')
     password = os.environ.get('NGT48CD_PASSWORD', 'password')
@@ -50,6 +51,7 @@ def filter_tickets(tickets, query):
         one_apply['entry'] = _entries
     return tickets
 
+
 def sum_tickets(tickets):
     sum_record = {}
     for one_apply in tickets:
@@ -77,6 +79,7 @@ def get_tickets(cookies):
     except JSONDecodeError as error:
         print(error)
         return res.text
+
 
 def authentication(username, password):
     auth_url = f'{APIURL}/authentication'

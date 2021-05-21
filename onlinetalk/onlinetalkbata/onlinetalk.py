@@ -7,16 +7,19 @@ load_dotenv()
 
 BASEURL = 'https://online-talk.jp'
 
+
 def main():
     username = os.environ.get('ONLINETALK_USERNAME', 'username')
     password = os.environ.get('ONLINETALK_PASSWORD', 'password')
     cookies = authentication(username, password)
     get_apply_list(cookies)
 
+
 def get_apply_list(cookies):
     url = f'{BASEURL}/user/link'
     res = requests.get(url, cookies=cookies)
     print(res.text)
+
 
 def authentication(username, password):
     authurl = f"{BASEURL}/auth"
