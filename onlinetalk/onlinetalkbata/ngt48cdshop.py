@@ -6,6 +6,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+DATE_FORMAT = '%Y%m%d'
+START_DATE = os.environ.get('NGT48CD_START_DATE', None)
+AFTER_TODAY = os.environ.get('NGT48CD_AFTER_TODAY', 'False').lower() == 'True'
+
 BASEURL = 'https://ngt48cd.shop'
 APIURL = f'{BASEURL}/api/v1'
 
@@ -16,8 +20,14 @@ def main():
     cookies = authentication(username, password)
     tickets = get_tickets(cookies)
     query = {
-            'after_today': True,
+            'after_today': False,
+            'start_date': datetime(2000, 1, 1)
             }
+    if AFTER_TODAY:
+        query['after_today'] = AFTER_TODAY
+    if START_DATE is not None:
+        start_date = datetime.strptime(START_DATE, DATE_FORMAT)
+        query['start_date'] = start_date
     tickets = filter_tickets(tickets, query)
     tickets = sum_tickets(tickets)
     keys = [int(k) for k in tickets.keys()]
@@ -41,13 +51,14 @@ def filter_tickets(tickets, query):
     for one_apply in tickets:
         entries = one_apply['entry']
         _entries = []
+        start_date = query['start_date']
+        if query['after_today']:
+            start_date = datetime.today()
         for entry in entries:
-            if query['after_today']:
-                today = datetime.today()
-                datestr = entry['date']
-                date = datetime.strptime(datestr, '%Y-%m-%d')
-                if today < date:
-                    _entries.append(entry)
+            datestr = entry['date']
+            date = datetime.strptime(datestr, '%Y-%m-%d')
+            if start_date < date:
+                _entries.append(entry)
         one_apply['entry'] = _entries
     return tickets
 
