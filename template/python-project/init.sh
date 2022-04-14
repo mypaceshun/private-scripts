@@ -56,6 +56,7 @@ function init_directory() {
   cat ${tmp_dir}/${add_file} >> pyproject.toml
   mkdir -vp .github/workflows/
   download_template "template/main.yml" .github/workflows/
+  ${POETRY} add -D sphinx
   mkdir -vp pre-docs
   ${POETRY} run sphinx-quickstart pre-docs --sep -l ja --ext-autodoc --ext-doctest --extgithubpages --no-makefile --no-batchfile
 }
