@@ -25,7 +25,7 @@ help = "format code style"
 
 [tool.poe.tasks.doc]
 sequence = [
-  { cmd = "sphinx-apidoc -f -e -o pre-docs/ src/openldap_schema_parser/"},
+  { cmd = "sphinx-apidoc -f -e -o pre-docs/ src/"},
   { cmd = "sphinx-build -b html pre-docs/ docs/" },
 ]
 help = "build document"
