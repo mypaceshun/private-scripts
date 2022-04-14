@@ -46,7 +46,7 @@ function download_template() {
 function init_directory() {
   ${POETRY} init
   ${POETRY} add click rich
-  ${POETRY} add -D flake8 pyproject-flake8 isort autoflake black mypy pytest pytest-cov poethepoet pre-commit
+  ${POETRY} add -D flake8 pyproject-flake8 isort autoflake black mypy types-setuptools pytest pytest-cov poethepoet pre-commit
   download_template "template/.pre-commit-config.yaml"
   mkdir -vp src/ tests/
   ${POETRY} run pre-commit install
@@ -58,7 +58,9 @@ function init_directory() {
   download_template "template/main.yml" .github/workflows/
   ${POETRY} add -D sphinx
   mkdir -vp pre-docs
-  ${POETRY} run sphinx-quickstart pre-docs --sep -l ja --ext-autodoc --ext-doctest --ext-githubpages --no-makefile --no-batchfile
+  ${POETRY} run sphinx-quickstart --sep -l ja --ext-autodoc --ext-doctest --ext-githubpages --no-makefile --no-batchfile
+  mv -v source pre-docs
+  rm -vrf build
 }
 
 (cd ${TARGET} && init_directory)
