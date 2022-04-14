@@ -1,0 +1,45 @@
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+
+[tool.poe.tasks.test]
+cmd = "pytest -v --cov=src/ --cov-report=html --cov-report=xml tests/"
+help = "run test"
+
+[tool.poe.tasks.lint]
+sequence = [
+  { cmd = "pflake8 src/ tests/" },
+  { cmd = "mypy src/" }
+]
+help = "check syntax"
+ignore_fail = "return_non_zero"
+
+[tool.poe.tasks.format]
+sequence = [ 
+  { cmd = "autoflake -ir --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports src/ tests/" },
+  { cmd = "isort src/ tests/" },
+  { cmd = "black src/ tests/" },
+  "lint"
+]
+help = "format code style"
+
+[tool.poe.tasks.doc]
+sequence = [
+  { cmd = "sphinx-apidoc -f -e -o pre-docs/ src/openldap_schema_parser/"},
+  { cmd = "sphinx-build -b html pre-docs/ docs/" },
+]
+help = "build document"
+
+[tool.isort]
+profile = "black"
+
+[tool.flake8]
+max-line-length = 88
+max-omplexity = 10
+
+[tool.mypy]
+
+[[tool.mypy.overrides]]
+module = [
+]
+ignore_missing_imports = true
