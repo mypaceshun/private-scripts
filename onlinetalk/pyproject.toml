@@ -10,15 +10,34 @@ python = "^3.8"
 requests = "^2.25.0"
 python-dotenv = "^0.15.0"
 beautifulsoup4 = "^4.9.3"
+gspread = "^4.0.1"
+oauth2client = "^4.1.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.1.2"
 pylint = "^2.6.0"
-flake8 = "^3.9.2"
+poethepoet = "^0.11.0"
+autoflake = "^1.4"
+flake8 = "^4.0.1"
+autopep8 = "^1.6.0"
 
 [tool.poetry.scripts]
 main = "onlinetalkbata.ngt48cdshop:main"
 main2 = "onlinetalkbata.onlinetalk:main"
+
+[tool.poe.tasks.write]
+help = "write to google spreadsheet"
+cmd = "python onlinetalkbata/writegsheet.py"
+[tool.poe.tasks.lint]
+help = "lint script"
+cmd = "flake8 onlinetalkbata/"
+[tool.poe.tasks.format]
+help = "auto format"
+sequence = [
+  { cmd = "autoflake -ir --exclude='*scim*' --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports onlinetalkbata/"},
+  { cmd = "isort onlinetalkbata/" },
+  { cmd = "autopep8 -ir onlinetalkbata/" },
+]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
