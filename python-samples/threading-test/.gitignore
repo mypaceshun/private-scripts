@@ -1,0 +1,4 @@
+.mypy_cache
+.venv/
+*.py[co]
+__pycache__
