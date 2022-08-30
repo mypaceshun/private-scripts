@@ -5,6 +5,7 @@ from format_test.fstring_func import fstring_run
 from format_test.logging_func import logging_run
 from format_test.percent_func import percent_run, pre_percent_run
 from format_test.plus_func import plus_run
+from format_test.template_func import template_run
 
 
 @click.command()
@@ -18,3 +19,4 @@ def cli(num):
     pre_percent_run(num)
     logging_run(num)
     plus_run(num)
+    template_run(num)
