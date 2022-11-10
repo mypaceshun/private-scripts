@@ -26,7 +26,8 @@ SHEET_ID = os.environ.get("GOOGLE_SPREADSHEET_ID", "sheetid")
 SIGLE_DATELIST = [['20201120', '20201231', '5thシングル(シャーベットピンク)'],
                   ['20210601', '20211031', '6thシングル(Awesome)'],
                   ['20220101', '20220430', '7thシングル(ポンコツな君が好きだ)'],
-                  ['20220701', '20221001', '1stアルバム'], ]
+                  ['20220701', '20221231', '1stアルバム'], 
+                  ['20230101', '20230530', '8thシングル']]
 
 
 def get_spreadsheets_obj(json_key_file, sheetid):
