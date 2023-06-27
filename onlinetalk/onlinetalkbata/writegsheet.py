@@ -63,16 +63,18 @@ def write_gsheet(gsheets, tickets, title):
     except gspread.exceptions.WorksheetNotFound:
         gsheets.add_worksheet(title=title, rows="300", cols="20")
         sheet = gsheets.worksheet(title)
-    headers = [['日付', 'メンバー名', '部数', '当選枚数', '応募枚数']]
-    sheet.update(f'A1', headers)
+    headers = [['日付', 'メンバー名', '部数', '当選枚数', '落選枚数', '応募枚数']]
+    sheet.update('A1', headers)
     sheet.update(
-        f'F1', f"最終更新時刻 {datetime.now().strftime('%Y/%m/%d %H:%M:%S')}")
-    sheet.update(
-        f'F2', "当選枚数合計")
-    sheet.update(
-        f'G2', "=SUM(D:D)", raw=False)
+        'G1', f"最終更新時刻 {datetime.now().strftime('%Y/%m/%d %H:%M:%S')}")
+    sheet.update('G2', "当選枚数合計")
+    sheet.update('H2', "=SUM(D:D)", raw=False)
+    sheet.update('G3', "落選枚数合計")
+    sheet.update('H3', "=SUM(E:E)", raw=False)
+    sheet.update('G4', "抽選枚数合計")
+    sheet.update('H4', "=SUM(F:F)", raw=False)
     length = len(tickets)
-    range = f"A2:E{length+2}"
+    range = f"A2:F{length+2}"
     celldata = []
     keys = [int(k) for k in tickets.keys()]
     keys = [str(k) for k in sorted(keys)]
@@ -81,8 +83,10 @@ def write_gsheet(gsheets, tickets, title):
         bu = tickets[_id]['section']['name']
         count = tickets[_id]['count']
         success_count = tickets[_id]['success_count']
+        failur_count = tickets[_id]['failur_count']
+        lottery_count = tickets[_id]['lottery_count']
         date = tickets[_id]['date']
-        celldata.append([date, member, bu, success_count, count])
+        celldata.append([date, member, bu, success_count, failur_count, lottery_count])
     sheet.update(range, celldata)
 
 

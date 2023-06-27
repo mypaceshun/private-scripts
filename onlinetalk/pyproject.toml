@@ -34,7 +34,7 @@ cmd = "flake8 onlinetalkbata/"
 [tool.poe.tasks.format]
 help = "auto format"
 sequence = [
-  { cmd = "autoflake -ir --exclude='*scim*' --remove-all-unused-imports --remove-unused-variables --ignore-init-module-imports onlinetalkbata/"},
+  { cmd = "autoflake -ir --remove-all-unused-imports --ignore-init-module-imports onlinetalkbata/"},
   { cmd = "isort onlinetalkbata/" },
   { cmd = "autopep8 -ir onlinetalkbata/" },
 ]

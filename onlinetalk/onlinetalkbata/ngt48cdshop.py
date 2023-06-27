@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 from json.decoder import JSONDecodeError
+from pprint import pprint
 
 import requests
 from dotenv import load_dotenv
@@ -43,19 +44,25 @@ def main():
 
 
 def print_text(tickets, keys):
-    stotal = 0
     total = 0
+    stotal = 0
+    ftotal = 0
+    ltotal = 0
     for _id in keys:
         member = tickets[_id]['member']
         bu = tickets[_id]['section']['name']
         count = tickets[_id]['count']
         success_count = tickets[_id]['success_count']
+        failur_count = tickets[_id]['failur_count']
+        lottery_count = tickets[_id]['lottery_count']
         date = tickets[_id]['date']
-        row = f'{date} {member} {bu}: {success_count} / {count}'
+        row = f'{date} {member} {bu}: {success_count:2} / {failur_count:2} / {lottery_count:2}'
         print(row)
         total += count
         stotal += success_count
-    print(f'total: {stotal} / {total}')
+        ftotal += failur_count
+        ltotal += lottery_count
+    print(f'success: {stotal:4}, failur: {ftotal:4}, lottery: {ltotal:4}')
 
 
 def print_csv(tickets, keys):
@@ -93,18 +100,27 @@ def filter_tickets(tickets, query):
 def sum_tickets(tickets):
     sum_record = {}
     for one_apply in tickets:
+        lottery_id = int(one_apply['clasp']['lottery']['id'])
+        # 未抽選 lottery_id=0
+        # 抽選済み lottery_id=2
         entries = one_apply['entry']
         for entry in entries:
             _id = entry['section']['id']
             count = int(entry['count'])
             success_count = int(entry['success_count'])
-            if _id in sum_record:
-                sum_record[_id]['count'] += count
-                sum_record[_id]['success_count'] += success_count
-            else:
+            if _id not in sum_record:
                 sum_record[_id] = entry
-                sum_record[_id]['count'] = count
-                sum_record[_id]['success_count'] = success_count
+                sum_record[_id]['count'] = 0
+                sum_record[_id]['success_count'] = 0
+                sum_record[_id]['failur_count'] = 0
+                sum_record[_id]['lottery_count'] = 0
+            sum_record[_id]['count'] += count
+            sum_record[_id]['success_count'] += success_count
+            diff_count = count - success_count
+            if lottery_id == 0:  # 未抽選
+                sum_record[_id]['lottery_count'] += diff_count
+            else:  # 抽選済み
+                sum_record[_id]['failur_count'] += diff_count
     return sum_record
 
 
