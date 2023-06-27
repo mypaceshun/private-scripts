@@ -26,8 +26,9 @@ SHEET_ID = os.environ.get("GOOGLE_SPREADSHEET_ID", "sheetid")
 SIGLE_DATELIST = [['20201120', '20201231', '5thシングル(シャーベットピンク)'],
                   ['20210601', '20211031', '6thシングル(Awesome)'],
                   ['20220101', '20220430', '7thシングル(ポンコツな君が好きだ)'],
-                  ['20220701', '20221231', '1stアルバム'], 
-                  ['20230101', '20230530', '8thシングル']]
+                  ['20220701', '20221231', '1stアルバム(未完成の未来)'],
+                  ['20230101', '20230630', '8thシングル(渡り鳥たちに空は見えない)'],
+                  ['20230701', '20230930', '9thシングル']]
 
 
 def get_spreadsheets_obj(json_key_file, sheetid):
@@ -48,6 +49,8 @@ def get_ticket_data(start=None, end=None):
     query = {
         "start_date": start,
     }
+    if end is not None:
+        query["end_date"] = end
     tickets = filter_tickets(tickets, query)
     tickets = sum_tickets(tickets)
     return tickets
@@ -64,6 +67,10 @@ def write_gsheet(gsheets, tickets, title):
     sheet.update(f'A1', headers)
     sheet.update(
         f'F1', f"最終更新時刻 {datetime.now().strftime('%Y/%m/%d %H:%M:%S')}")
+    sheet.update(
+        f'F2', "当選枚数合計")
+    sheet.update(
+        f'G2', "=SUM(D:D)", raw=False)
     length = len(tickets)
     range = f"A2:E{length+2}"
     celldata = []
