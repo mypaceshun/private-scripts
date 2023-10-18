@@ -5,7 +5,9 @@ description = "asyncio learn"
 authors = ["KAWAI Shun <mypaceshun@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-packages = [{include = "async_learn"}]
+packages = [
+{include = "async_learn", from = "src"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
